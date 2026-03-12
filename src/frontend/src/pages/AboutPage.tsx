@@ -1,35 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Award, MapPin, Target } from "lucide-react";
+import { Award, Target } from "lucide-react";
 
 export default function AboutPage() {
-  const areasServed = [
-    {
-      name: "Surrey",
-      image: "/assets/generated/surrey-area.dim_400x300.jpg",
-      caption: "Serving students in Surrey",
-    },
-    {
-      name: "Delta",
-      image: "/assets/generated/delta-area.dim_400x300.jpg",
-      caption: "Serving students in Delta",
-    },
-    {
-      name: "Guilford",
-      image: "/assets/uploads/image-1.png",
-      caption: "Serving students in Guilford",
-    },
-    {
-      name: "Cloverdale",
-      image: "/assets/generated/cloverdale-area.dim_400x300.jpg",
-      caption: "Serving students in Cloverdale",
-    },
-    {
-      name: "Fleetwood",
-      image: "/assets/generated/fleetwood-area.dim_400x300.jpg",
-      caption: "Serving students in Fleetwood",
-    },
-  ];
-
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -70,49 +42,6 @@ export default function AboutPage() {
                 they can thrive. Our commitment is to help you achieve your
                 driving goals with confidence and competence.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Areas We Serve Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <MapPin className="h-8 w-8 text-primary" />
-                <h2 className="text-3xl font-bold">Areas We Serve</h2>
-              </div>
-              <p className="text-lg text-muted-foreground">
-                Providing quality driving instruction across the Lower Mainland
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {areasServed.map((area) => (
-                <Card
-                  key={area.name}
-                  className="overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  <CardContent className="p-0">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <img
-                        src={area.image}
-                        alt={area.name}
-                        className="w-full h-full object-cover transition-transform hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-4 text-center">
-                      <h3 className="text-xl font-semibold mb-2">
-                        {area.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {area.caption}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         </div>

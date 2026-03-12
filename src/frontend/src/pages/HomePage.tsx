@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
-import { Car, CheckCircle, Clock, Shield, Users } from "lucide-react";
+import { Car, CheckCircle, Clock, MapPin, Shield, Users } from "lucide-react";
 
 export default function HomePage() {
   const features = [
@@ -39,6 +39,14 @@ export default function HomePage() {
       title: "Affordable Packages",
       description: "Competitive pricing with flexible payment options",
     },
+  ];
+
+  const areasServed = [
+    "Cloverdale",
+    "Surrey",
+    "Delta",
+    "Fleetwood",
+    "Guilford",
   ];
 
   return (
@@ -77,6 +85,32 @@ export default function HomePage() {
                 View Packages
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Areas We Serve Section */}
+      <section className="py-12 bg-muted/30">
+        <div className="container">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <MapPin className="h-6 w-6 text-primary" />
+              <h2 className="text-2xl font-bold">Areas We Serve</h2>
+            </div>
+            <p className="text-muted-foreground">
+              Providing quality driving instruction across the Lower Mainland
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            {areasServed.map((area) => (
+              <div
+                key={area}
+                className="flex items-center gap-2 bg-background border rounded-lg px-5 py-3 shadow-sm"
+              >
+                <MapPin className="h-4 w-4 text-primary" />
+                <span className="font-semibold">{area}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -125,9 +159,8 @@ export default function HomePage() {
             Ready to Start Your Driving Journey?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            Join thousands of satisfied students who have learned to drive with
-            J Atwal Driving School. Book your first lesson today and take the
-            first step towards driving independence.
+            Book your first lesson today and take the first step towards driving
+            independence.
           </p>
           <Link to="/booking">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6">

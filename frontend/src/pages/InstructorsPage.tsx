@@ -60,6 +60,12 @@ export default function InstructorsPage() {
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                       <span className="text-muted-foreground">
+                        Previously TransLink Bus Driver.
+                      </span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">
                         Fully qualified and certified instructor
                       </span>
                     </li>
