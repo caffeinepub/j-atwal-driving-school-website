@@ -9,7 +9,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, CheckCircle } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface ContactFormData {
@@ -20,6 +21,8 @@ interface ContactFormData {
 }
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -31,7 +34,9 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\n\nMessage:\n${data.message}`
     );
-    window.location.href = `mailto:jatwaldrivingschool@gmail.com?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:jatwaldrivingschool@gmail.com?subject=${subject}&body=${body}`;
+    window.open(mailtoLink, "_self");
+    setSubmitted(true);
   };
 
   return (
@@ -110,93 +115,100 @@ export default function ContactPage() {
                 <CardHeader>
                   <CardTitle>Send Us a Message</CardTitle>
                   <CardDescription>
-                    Fill out the form below. Clicking Send will open your email app with the message ready to send.
+                    Fill out the form and click Send. Your email app will open with the message ready -- just press Send in your email to deliver it.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name *</Label>
-                      <Input
-                        id="name"
-                        data-ocid="contact.name.input"
-                        placeholder="Your name"
-                        {...register("name", { required: "Name is required" })}
-                      />
-                      {errors.name && (
-                        <p className="text-sm text-destructive">
-                          {errors.name.message}
-                        </p>
-                      )}
+                  {submitted ? (
+                    <div data-ocid="contact.success_state" className="flex flex-col items-center text-center py-8 space-y-4">
+                      <CheckCircle className="h-12 w-12 text-green-500" />
+                      <h3 className="text-lg font-semibold">Your email app should have opened!</h3>
+                      <p className="text-muted-foreground">
+                        Please press <strong>Send</strong> in your email app to deliver your message to J Atwal Driving School.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        If your email app did not open, you can email us directly at{" "}
+                        <a href="mailto:jatwaldrivingschool@gmail.com" className="text-primary underline">
+                          jatwaldrivingschool@gmail.com
+                        </a>
+                      </p>
+                      <Button variant="outline" onClick={() => setSubmitted(false)}>
+                        Send Another Message
+                      </Button>
                     </div>
+                  ) : (
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Name *</Label>
+                        <Input
+                          id="name"
+                          data-ocid="contact.name.input"
+                          placeholder="Your name"
+                          {...register("name", { required: "Name is required" })}
+                        />
+                        {errors.name && (
+                          <p className="text-sm text-destructive">{errors.name.message}</p>
+                        )}
+                      </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        data-ocid="contact.email.input"
-                        placeholder="your@email.com"
-                        {...register("email", {
-                          required: "Email is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "Invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && (
-                        <p className="text-sm text-destructive">
-                          {errors.email.message}
-                        </p>
-                      )}
-                    </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          data-ocid="contact.email.input"
+                          placeholder="your@email.com"
+                          {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "Invalid email address",
+                            },
+                          })}
+                        />
+                        {errors.email && (
+                          <p className="text-sm text-destructive">{errors.email.message}</p>
+                        )}
+                      </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        data-ocid="contact.phone.input"
-                        placeholder="778-916-0055"
-                        {...register("phone", {
-                          required: "Phone number is required",
-                        })}
-                      />
-                      {errors.phone && (
-                        <p className="text-sm text-destructive">
-                          {errors.phone.message}
-                        </p>
-                      )}
-                    </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone *</Label>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          data-ocid="contact.phone.input"
+                          placeholder="778-916-0055"
+                          {...register("phone", { required: "Phone number is required" })}
+                        />
+                        {errors.phone && (
+                          <p className="text-sm text-destructive">{errors.phone.message}</p>
+                        )}
+                      </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message *</Label>
-                      <Textarea
-                        id="message"
-                        data-ocid="contact.message.textarea"
-                        placeholder="How can we help you?"
-                        rows={5}
-                        {...register("message", {
-                          required: "Message is required",
-                        })}
-                      />
-                      {errors.message && (
-                        <p className="text-sm text-destructive">
-                          {errors.message.message}
-                        </p>
-                      )}
-                    </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="message">Message *</Label>
+                        <Textarea
+                          id="message"
+                          data-ocid="contact.message.textarea"
+                          placeholder="How can we help you?"
+                          rows={5}
+                          {...register("message", { required: "Message is required" })}
+                        />
+                        {errors.message && (
+                          <p className="text-sm text-destructive">{errors.message.message}</p>
+                        )}
+                      </div>
 
-                    <Button
-                      type="submit"
-                      data-ocid="contact.submit_button"
-                      className="w-full"
-                      size="lg"
-                    >
-                      Send Message
-                    </Button>
-                  </form>
+                      <Button
+                        type="submit"
+                        data-ocid="contact.submit_button"
+                        className="w-full"
+                        size="lg"
+                      >
+                        Send Message
+                      </Button>
+                    </form>
+                  )}
                 </CardContent>
               </Card>
             </div>
