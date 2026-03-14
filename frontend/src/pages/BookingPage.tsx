@@ -1,86 +1,7 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, CheckCircle } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-
-interface BookingFormData {
-  name: string;
-  email: string;
-  phone: string;
-  preferredDate: string;
-  notes: string;
-}
+import { Card, CardContent } from "@/components/ui/card";
+import { PhoneCall, Mail } from "lucide-react";
 
 export default function BookingPage() {
-  const [selectedTime, setSelectedTime] = useState("");
-  const [selectedLesson, setSelectedLesson] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [lessonError, setLessonError] = useState(false);
-  const [timeError, setTimeError] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<BookingFormData>();
-
-  const onSubmit = (data: BookingFormData) => {
-    let hasError = false;
-    if (!selectedLesson) { setLessonError(true); hasError = true; } else { setLessonError(false); }
-    if (!selectedTime) { setTimeError(true); hasError = true; } else { setTimeError(false); }
-    if (hasError) return;
-
-    const subject = encodeURIComponent(`Driving Lesson Booking Request - ${data.name}`);
-    const body = encodeURIComponent(
-      `Booking Request Details\n` +
-      `========================\n\n` +
-      `Name: ${data.name}\n` +
-      `Email: ${data.email}\n` +
-      `Phone: ${data.phone}\n` +
-      `Lesson Type: ${selectedLesson}\n` +
-      `Preferred Date: ${data.preferredDate}\n` +
-      `Preferred Time: ${selectedTime}\n` +
-      `Additional Notes: ${data.notes || 'None'}\n`
-    );
-    const mailtoLink = `mailto:jatwaldrivingschool@gmail.com?subject=${subject}&body=${body}`;
-    window.open(mailtoLink, "_self");
-    setSubmitted(true);
-  };
-
-  const timeSlots = [
-    "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
-    "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM",
-    "04:00 PM", "05:00 PM", "06:00 PM",
-  ];
-
-  const lessonTypes = [
-    "30-Minute Lesson",
-    "1-Hour Lesson",
-    "2-Hour Lesson",
-    "2-Lesson Package",
-    "10-Lesson Package",
-    "20-Lesson Package",
-    "25-Lesson Package",
-    "30-Lesson Package",
-  ];
-
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -91,182 +12,70 @@ export default function BookingPage() {
               Book Your Driving Lesson
             </h1>
             <p className="text-xl text-muted-foreground">
-              Fill out the form below and we'll contact you to confirm your booking
+              Ready to get started? Reach out to us with the details below and we will get back to you to confirm your booking.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Booking Form Section */}
+      {/* Info Section */}
       <section className="py-16">
         <div className="container max-w-2xl">
           <Card>
-            <CardHeader>
-              <CardTitle>Lesson Booking Form</CardTitle>
-              <CardDescription>
-                Fill in your details and click Submit. Your email app will open with the booking info -- just press Send to complete your request.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {submitted ? (
-                <div data-ocid="booking.success_state" className="flex flex-col items-center text-center py-8 space-y-4">
-                  <CheckCircle className="h-12 w-12 text-green-500" />
-                  <h3 className="text-lg font-semibold">Your email app should have opened!</h3>
-                  <p className="text-muted-foreground">
-                    Please press <strong>Send</strong> in your email app to submit your booking request to J Atwal Driving School.
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    If your email app did not open, you can email us directly at{" "}
-                    <a href="mailto:jatwaldrivingschool@gmail.com" className="text-primary underline">
-                      jatwaldrivingschool@gmail.com
-                    </a>
-                  </p>
-                  <Button variant="outline" onClick={() => { setSubmitted(false); setSelectedLesson(""); setSelectedTime(""); }}>
-                    Submit Another Booking
-                  </Button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  {/* Name */}
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      data-ocid="booking.name.input"
-                      placeholder="Your full name"
-                      {...register("name", { required: "Name is required" })}
-                    />
-                    {errors.name && (
-                      <p className="text-sm text-destructive">{errors.name.message}</p>
-                    )}
-                  </div>
-
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      data-ocid="booking.email.input"
-                      placeholder="your@email.com"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address",
-                        },
-                      })}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-destructive">{errors.email.message}</p>
-                    )}
-                  </div>
-
-                  {/* Phone */}
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      data-ocid="booking.phone.input"
-                      placeholder="778-916-0055"
-                      {...register("phone", { required: "Phone number is required" })}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-destructive">{errors.phone.message}</p>
-                    )}
-                  </div>
-
-                  {/* Lesson Type */}
-                  <div className="space-y-2">
-                    <Label>Lesson Type *</Label>
-                    <Select onValueChange={(v) => { setSelectedLesson(v); setLessonError(false); }} value={selectedLesson}>
-                      <SelectTrigger data-ocid="booking.lesson.select">
-                        <SelectValue placeholder="Choose a lesson type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {lessonTypes.map((type) => (
-                          <SelectItem key={type} value={type}>{type}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {lessonError && <p className="text-sm text-destructive">Please select a lesson type</p>}
-                  </div>
-
-                  {/* Preferred Date */}
-                  <div className="space-y-2">
-                    <Label htmlFor="preferredDate">Preferred Date *</Label>
-                    <div className="relative">
-                      <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                      <Input
-                        id="preferredDate"
-                        type="date"
-                        data-ocid="booking.date.input"
-                        className="pl-10"
-                        min={new Date().toISOString().split("T")[0]}
-                        {...register("preferredDate", { required: "Date is required" })}
-                      />
-                    </div>
-                    {errors.preferredDate && (
-                      <p className="text-sm text-destructive">{errors.preferredDate.message}</p>
-                    )}
-                  </div>
-
-                  {/* Preferred Time */}
-                  <div className="space-y-2">
-                    <Label>Preferred Time *</Label>
-                    <Select onValueChange={(v) => { setSelectedTime(v); setTimeError(false); }} value={selectedTime}>
-                      <SelectTrigger data-ocid="booking.time.select">
-                        <SelectValue placeholder="Choose a time slot" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeSlots.map((time) => (
-                          <SelectItem key={time} value={time}>{time}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {timeError && <p className="text-sm text-destructive">Please select a time slot</p>}
-                  </div>
-
-                  {/* Notes */}
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Additional Notes</Label>
-                    <Textarea
-                      id="notes"
-                      data-ocid="booking.notes.textarea"
-                      placeholder="Any additional information or requests..."
-                      rows={4}
-                      {...register("notes")}
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    data-ocid="booking.submit_button"
-                    className="w-full"
-                    size="lg"
-                  >
-                    Submit Booking Request
-                  </Button>
-                </form>
-              )}
+            <CardContent className="pt-8 pb-8">
+              <h2 className="text-2xl font-semibold mb-4">What to Include When You Contact Us</h2>
+              <p className="text-muted-foreground mb-6">
+                When reaching out to book a session, please provide the following information:
+              </p>
+              <ol className="space-y-4 text-base">
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary min-w-[24px]">1.</span>
+                  <span><strong>First and Last Name</strong></span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary min-w-[24px]">2.</span>
+                  <span><strong>Phone Number</strong></span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary min-w-[24px]">3.</span>
+                  <span><strong>Package You Are Interested In</strong> (e.g. 1-Hour Lesson, 10-Lesson Package, etc.)</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary min-w-[24px]">4.</span>
+                  <span><strong>Preferred Date</strong></span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary min-w-[24px]">5.</span>
+                  <span><strong>Preferred Time Slot</strong> (morning, afternoon, or evening)</span>
+                </li>
+              </ol>
             </CardContent>
           </Card>
 
-          {/* Info Card */}
-          {!submitted && (
-            <Card className="mt-8 bg-muted/50">
-              <CardContent className="pt-6">
-                <h3 className="font-semibold mb-3">What happens next?</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Clicking Submit will open your email app (Gmail, Outlook, Apple Mail, etc.) with the booking details pre-filled</li>
-                  <li>Press Send in your email app -- your request goes straight to J Atwal Driving School</li>
-                  <li>We will confirm your lesson date, time, and pick-up location within 24 hours</li>
-                  <li>Payment can be made on the day of your first lesson</li>
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+          {/* Contact Options */}
+          <Card className="mt-8 bg-muted/50">
+            <CardContent className="pt-6 pb-6">
+              <h3 className="font-semibold mb-4 text-lg">Contact Us</h3>
+              <div className="space-y-4">
+                <a
+                  href="tel:7789160055"
+                  data-ocid="booking.phone.link"
+                  className="flex items-center gap-3 text-primary hover:underline"
+                >
+                  <PhoneCall className="h-5 w-5" />
+                  <span className="text-base font-medium">7789160055</span>
+                </a>
+                <a
+                  href="mailto:jatwaldrivingschool@gmail.com"
+                  data-ocid="booking.email.link"
+                  className="flex items-center gap-3 text-primary hover:underline"
+                >
+                  <Mail className="h-5 w-5" />
+                  <span className="text-base font-medium">jatwaldrivingschool@gmail.com</span>
+                </a>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>

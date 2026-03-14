@@ -13,7 +13,6 @@ export default function Layout() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
     { href: "/sessions", label: "Sessions & Prices" },
-    { href: "/booking", label: "Book Now" },
     { href: "/instructors", label: "Instructors" },
     { href: "/mission", label: "Our Mission" },
     { href: "/contact", label: "Contact" },

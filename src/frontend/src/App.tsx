@@ -9,7 +9,6 @@ import {
 import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
 import AboutPage from "./pages/AboutPage";
-import BookingPage from "./pages/BookingPage";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
 import InstructorsPage from "./pages/InstructorsPage";
@@ -40,12 +39,6 @@ const sessionInfoRoute = createRoute({
   component: SessionInfoPage,
 });
 
-const bookingRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/booking",
-  component: BookingPage,
-});
-
 const contactRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/contact",
@@ -68,7 +61,6 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   aboutRoute,
   sessionInfoRoute,
-  bookingRoute,
   contactRoute,
   missionRoute,
   instructorsRoute,

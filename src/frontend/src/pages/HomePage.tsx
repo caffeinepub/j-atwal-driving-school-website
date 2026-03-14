@@ -71,7 +71,7 @@ export default function HomePage() {
             your journey to becoming a safe and confident driver today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/booking">
+            <Link to="/contact">
               <Button size="lg" className="text-lg px-8 py-6">
                 Book Your First Lesson
               </Button>
@@ -162,7 +162,7 @@ export default function HomePage() {
             Book your first lesson today and take the first step towards driving
             independence.
           </p>
-          <Link to="/booking">
+          <Link to="/contact">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
               Schedule a Lesson Now
             </Button>
